@@ -1,0 +1,10 @@
+/home/rsheasby/Documents/expert_system/expert_system/bin/Debug/netcoreapp2.0/expert_system.deps.json
+/home/rsheasby/Documents/expert_system/expert_system/bin/Debug/netcoreapp2.0/expert_system.runtimeconfig.json
+/home/rsheasby/Documents/expert_system/expert_system/bin/Debug/netcoreapp2.0/expert_system.runtimeconfig.dev.json
+/home/rsheasby/Documents/expert_system/expert_system/bin/Debug/netcoreapp2.0/expert_system.dll
+/home/rsheasby/Documents/expert_system/expert_system/bin/Debug/netcoreapp2.0/expert_system.pdb
+/home/rsheasby/Documents/expert_system/expert_system/obj/Debug/netcoreapp2.0/expert_system.csproj.CoreCompileInputs.cache
+/home/rsheasby/Documents/expert_system/expert_system/obj/Debug/netcoreapp2.0/expert_system.AssemblyInfoInputs.cache
+/home/rsheasby/Documents/expert_system/expert_system/obj/Debug/netcoreapp2.0/expert_system.AssemblyInfo.cs
+/home/rsheasby/Documents/expert_system/expert_system/obj/Debug/netcoreapp2.0/expert_system.dll
+/home/rsheasby/Documents/expert_system/expert_system/obj/Debug/netcoreapp2.0/expert_system.pdb
