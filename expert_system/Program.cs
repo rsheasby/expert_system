@@ -7,18 +7,10 @@ namespace expert_system
     {
         static void Main(string[] args)
         {
+            IO io_class = new IO();
             if (args.Length == 1)
             {
-                string  line, condition, result;
-                StreamReader file = new StreamReader(args[0]);
-                Rules rule_obj = new Rules();
-
-                while ((line = file.ReadLine()) != null)
-                {
-                    condition = line.Substring(0, line.IndexOf("=>"));
-                    result = line.Substring(line.IndexOf("=>"));
-                    rule_obj.add(condition, result);
-                }
+                io_class.conditions(args[0]);
             }
         }
     }
