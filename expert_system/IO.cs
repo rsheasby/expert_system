@@ -52,5 +52,16 @@ namespace expert_system
                 }
             }
         }
+        public string query()
+        {
+            StreamReader file = new StreamReader(file_path);
+
+            while ((line = file.ReadLine()) != null)
+            {
+                if (line.StartsWith("?"))
+                    return (line.Substring(1));
+            }
+            return (null);
+        }
     }
 }

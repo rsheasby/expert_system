@@ -12,6 +12,7 @@ namespace expert_system
                 io_class.file_path = args[0];
                 io_class.main_rules();
                 io_class.initial_facts();
+                Console.WriteLine("Query: " + io_class.query());
             }
         }
     }
