@@ -5,21 +5,53 @@ namespace expert_system
 {
     class IO
     {
-        public void conditions(string file_path)
+        private string line; //will be used in all functions to read rules, facts & query
+        public string file_path{ get; set; } 
+
+        public void main_rules()
         {
-            string  line, condition, result;
-            StreamReader file = new StreamReader(file_path);
+            string  condition, result;
             Rules rule_obj = new Rules();
+            StreamReader file = new StreamReader(file_path);
+            line = file.ReadLine();
+
+            while (line != String.Empty)
+            {
+                condition = line.Substring(0, line.IndexOf("=>"));
+                condition = condition.Replace(" ", String.Empty); //Trims all whitespaces
+                result = line.Substring(line.IndexOf(">") + 1);
+                result = result.Replace(" ", String.Empty); //Trims all whitespaces
+                rule_obj.add(condition, result);
+                //Console.WriteLine("Condition:  " + condition);
+                //Console.WriteLine("Result:  " + result);
+                line = file.ReadLine();
+            }
+        }
+        public void initial_facts()
+        {
+            Facts fact_obj = new Facts();
+            StreamReader file = new StreamReader(file_path);
+            bool status = false;
 
             while ((line = file.ReadLine()) != null)
             {
-                condition = line.Substring(0, line.IndexOf("=>"));
-                condition = condition.Replace(" ", String.Empty);
-                result = line.Substring(line.IndexOf(">") + 1);
-                result = result.Replace(" ", String.Empty);
-                rule_obj.add(condition, result);
-                Console.WriteLine("Condition:  " + condition);
-                Console.WriteLine("Result:  " + result);
+                if (line.StartsWith("="))
+                {
+                    line = line.Substring(1); //skips the '=' char
+                    foreach (char c in line)
+                    {
+                        if (c != '!' && status == false)
+                            fact_obj.setValue(c, 1);
+                        else if (c == '!')
+                            status = true;
+                        else if (c != '!' && status == true)
+                        {
+                            fact_obj.setValue(c, 0);
+                            status = false;
+                        }
+                    }
+                    break ;
+                }
             }
         }
     }

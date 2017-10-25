@@ -10,7 +10,9 @@ namespace expert_system
             IO io_class = new IO();
             if (args.Length == 1)
             {
-                io_class.conditions(args[0]);
+                io_class.file_path = args[0];
+                io_class.main_rules();
+                io_class.initial_facts();
             }
         }
     }
