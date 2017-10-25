@@ -5,20 +5,21 @@ namespace expert_system
 {
     class IO
     {
-        public void conditions(string args)
+        public void conditions(string file_path)
         {
-            if (args.Length == 1)
-            {
-                string  line, condition, result;
-                StreamReader file = new StreamReader(args[0]);
-                Rules rule_obj = new Rules();
+            string  line, condition, result;
+            StreamReader file = new StreamReader(file_path);
+            Rules rule_obj = new Rules();
 
-                while ((line = file.ReadLine()) != null)
-                {
-                    condition = line.Substring(0, line.IndexOf("=>"));
-                    result = line.Substring(line.IndexOf("=>"));
-                    rule_obj.add(condition, result);
-                }
+            while ((line = file.ReadLine()) != null)
+            {
+                condition = line.Substring(0, line.IndexOf("=>"));
+                condition = condition.Replace(" ", String.Empty);
+                result = line.Substring(line.IndexOf(">") + 1);
+                result = result.Replace(" ", String.Empty);
+                rule_obj.add(condition, result);
+                Console.WriteLine("Condition:  " + condition);
+                Console.WriteLine("Result:  " + result);
             }
         }
     }
