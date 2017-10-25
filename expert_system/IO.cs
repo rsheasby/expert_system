@@ -22,8 +22,6 @@ namespace expert_system
                 result = line.Substring(line.IndexOf(">") + 1);
                 result = result.Replace(" ", String.Empty); //Trims all whitespaces
                 rule_obj.add(condition, result);
-                //Console.WriteLine("Condition:  " + condition);
-                //Console.WriteLine("Result:  " + result);
                 line = file.ReadLine();
             }
         }
