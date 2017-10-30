@@ -5,7 +5,7 @@ namespace expert_system
 {
     class IO
     {
-        private string line; //will be used in all functions to read rules, facts & query
+        private string line;
         public string file_path{ get; set; } 
 
         public void main_rules()
@@ -18,9 +18,9 @@ namespace expert_system
             while (line != String.Empty)
             {
                 condition = line.Substring(0, line.IndexOf("=>"));
-                condition = condition.Replace(" ", String.Empty); //Trims all whitespaces
+                condition = condition.Replace(" ", String.Empty);
                 result = line.Substring(line.IndexOf(">") + 1);
-                result = result.Replace(" ", String.Empty); //Trims all whitespaces
+                result = result.Replace(" ", String.Empty);
                 rule_obj.add(condition, result);
                 line = file.ReadLine();
             }
@@ -35,7 +35,7 @@ namespace expert_system
             {
                 if (line.StartsWith("="))
                 {
-                    line = line.Substring(1); //skips the '=' char
+                    line = line.Substring(1);
                     foreach (char c in line)
                     {
                         if (c != '!' && status == false)

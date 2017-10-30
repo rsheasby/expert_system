@@ -7,6 +7,8 @@ namespace expert_system
         static void Main(string[] args)
         {
             IO io_class = new IO();
+            Rules rule_obj = new Rules();
+
             if (args.Length == 1)
             {
                 io_class.file_path = args[0];

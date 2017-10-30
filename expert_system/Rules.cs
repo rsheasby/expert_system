@@ -11,7 +11,7 @@ namespace expert_system
 			public string	result;
 		}
 
-		private List<Rule>	rules = new List<Rule>();
+		public List<Rule>	rules = new List<Rule>();
 
 		public void		add(string condition, string result)
 		{
