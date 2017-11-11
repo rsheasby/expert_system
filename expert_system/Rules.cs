@@ -5,7 +5,7 @@ namespace expert_system
 {
     class Rules
     {
-		public struct	Rule
+		public class	Rule
 		{
 			public string	condition;
 			public string	result;
@@ -23,7 +23,10 @@ namespace expert_system
 
 		public Rule	get(int index)
 		{
-			return (rules[index]);
+			if (index >= rules.Count)
+				return (null);
+			else
+				return (rules[index]);
 		}
     }
 }
