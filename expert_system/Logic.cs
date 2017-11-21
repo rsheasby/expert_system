@@ -8,7 +8,7 @@ namespace expert_system
 		private static sbyte	evaluateRule(ref Facts facts, ref Rules rules, string condition)
 		{
 			Match	match;
-			string	spattern = @"\(([0-1A-Z!\+\^\|]+)\)";
+			string	spattern = @"\(([01A-Z!\+\^\|]+)\)";
 
 			Regex regex = new Regex(spattern);
 			match = regex.Match(condition);
@@ -104,25 +104,22 @@ namespace expert_system
 				return (-1);
 		}
 
-		private static void		processResult(ref Facts facts, string result)
+		private static sbyte	processResult(string result, char letter)
 		{
-			sbyte	value = 1;
-
-			for (int i = 0; i < result.Length; ++i)
-			{
-				if (result[i] == '!')
-					value = 0;
-				else if (char.IsUpper(result[i]))
-				{
-					facts.setValue(result[i], value);
-					value = 1;
-				}
-			}
+			if (result.Contains("|"))
+				return (-1);
+			else if (result.Contains("!" + letter))
+				return (0);
+			else if (result.Contains(letter.ToString()))
+				return (1);
+			else
+				return (-1);
 		}
 
 		public static sbyte		evaluateFact(ref Facts facts, ref Rules rules, char letter)
 		{
 			sbyte		temp;
+			sbyte		result = 0;
 			Rules.Rule	rule;
 
 			temp = facts.getValue(letter);
@@ -131,14 +128,20 @@ namespace expert_system
 				{
 					rule = rules.get(i);
 					if (rule == null)
-						return (0);
+						return (result);
 					else if (rule.result.Contains(letter.ToString()))
 						{
 							temp = evaluateRule(ref facts, ref rules, rule.condition);
 							if (temp == 1)
 							{
-								processResult(ref facts, rule.result);
-								return (facts.getValue(letter));
+								temp = processResult(rule.result, letter);
+								if (temp != -1)
+								{
+									facts.setValue(letter, temp);
+									return (temp);
+								}
+								else
+									result = -1;
 							}
 						}
 				}
