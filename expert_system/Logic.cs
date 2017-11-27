@@ -119,7 +119,7 @@ namespace expert_system
 		public static sbyte		evaluateFact(ref Facts facts, ref Rules rules, char letter)
 		{
 			sbyte		temp;
-			sbyte		result = 0;
+			sbyte		result = -1;
 			Rules.Rule	rule;
 
 			temp = facts.getValue(letter);
@@ -128,22 +128,23 @@ namespace expert_system
 				{
 					rule = rules.get(i);
 					if (rule == null)
+					{
+						facts.setValue(letter, result);
 						return (result);
+					}
 					else if (rule.result.Contains(letter.ToString()))
+					{
+						temp = evaluateRule(ref facts, ref rules, rule.condition);
+						if (temp == 1)
+							temp = processResult(rule.result, letter);
+						if (result != -1 && temp != -1 && temp != result)
 						{
-							temp = evaluateRule(ref facts, ref rules, rule.condition);
-							if (temp == 1)
-							{
-								temp = processResult(rule.result, letter);
-								if (temp != -1)
-								{
-									facts.setValue(letter, temp);
-									return (temp);
-								}
-								else
-									result = -1;
-							}
+							Console.WriteLine("Rule/Data contradiction!");
+							return (-1);
 						}
+						else if (temp != -1)
+							result = temp;
+					}
 				}
 			else
 				return (temp);
