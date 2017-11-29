@@ -1448,23 +1448,23 @@
     ]
   },
   "packageFolders": {
-    "/home/rsheasby/.nuget/packages/": {},
-    "/usr/share/dotnet/sdk/NuGetFallbackFolder": {}
+    "/Users/sazi/.nuget/packages/": {},
+    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/rsheasby/Documents/expert_system/expert_system/expert_system.csproj",
+      "projectUniqueName": "/Users/sazi/MyProjects/expert_system/expert_system/expert_system/expert_system.csproj",
       "projectName": "expert_system",
-      "projectPath": "/home/rsheasby/Documents/expert_system/expert_system/expert_system.csproj",
-      "packagesPath": "/home/rsheasby/.nuget/packages/",
-      "outputPath": "/home/rsheasby/Documents/expert_system/expert_system/obj/",
+      "projectPath": "/Users/sazi/MyProjects/expert_system/expert_system/expert_system/expert_system.csproj",
+      "packagesPath": "/Users/sazi/.nuget/packages/",
+      "outputPath": "/Users/sazi/MyProjects/expert_system/expert_system/expert_system/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "/usr/share/dotnet/sdk/NuGetFallbackFolder"
+        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "/home/rsheasby/.nuget/NuGet/NuGet.Config"
+        "/Users/sazi/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.0"
