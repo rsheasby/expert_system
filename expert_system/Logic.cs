@@ -106,17 +106,15 @@ namespace expert_system
 
 		private static sbyte	processResult(string result, char letter)
 		{
-			if (result.Contains("|"))
-				return (-1);
-			else if (result.Contains("!" + letter))
+			if (result.Contains("!" + letter))
 				return (0);
 			else if (result.Contains(letter.ToString()))
 				return (1);
 			else
-				return (-1);
+				return (0);
 		}
 
-		public static sbyte		evaluateFact(ref Facts facts, ref Rules rules, char letter)
+		private static sbyte		evaluateFact(ref Facts facts, ref Rules rules, char letter)
 		{
 			sbyte		temp;
 			sbyte		result = -1;
@@ -129,6 +127,8 @@ namespace expert_system
 					rule = rules.get(i);
 					if (rule == null)
 					{
+						if (result == -1)
+							result = 0;
 						facts.setValue(letter, result);
 						return (result);
 					}
@@ -139,7 +139,7 @@ namespace expert_system
 							temp = processResult(rule.result, letter);
 						if (result != -1 && temp != -1 && temp != result)
 						{
-							Console.WriteLine("Rule/Data contradiction!");
+							Console.Error.WriteLine("Rule/Data contradiction!");
 							return (-1);
 						}
 						else if (temp != -1)
@@ -148,6 +148,33 @@ namespace expert_system
 				}
 			else
 				return (temp);
+		}
+
+		public static void evaluateQueries(ref Rules rules, ref Facts facts, string queries)
+		{
+			if (queries == null || queries.Length == 0)
+				return ;
+			foreach (char letter in queries)
+			{
+				if (char.IsUpper(letter))
+				{
+					sbyte	temp;
+
+					temp = evaluateFact(ref facts, ref rules, letter);
+					switch (temp)
+					{
+						case -1:
+							Console.WriteLine("{0}: Unknown.", letter);
+							break;
+						case 0:
+							Console.WriteLine("{0}: False.", letter);
+							break;
+						case 1:
+							Console.WriteLine("{0}: True.", letter);
+							break;
+					}
+				}
+			}
 		}
     }
 }

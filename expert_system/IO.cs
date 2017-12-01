@@ -8,24 +8,43 @@ namespace expert_system
         private string line;
         public string file_path{ get; set; } 
 
-        public void main_rules()
+        public Object main_rules()
         {
             string  condition, result;
             Rules rule_obj = new Rules();
             StreamReader file = new StreamReader(file_path);
-            line = file.ReadLine();
-
-            while (line != String.Empty)
+            string temp;
+            
+            while ((line = file.ReadLine()) != null)
             {
-                condition = line.Substring(0, line.IndexOf("=>"));
+                if (line.Contains("#"))
+                    temp = line.Substring(0, line.IndexOf("#"));
+                else
+                    temp = line;
+                if (!temp.Contains("=>"))
+                    continue;
+                condition = temp.Substring(0, temp.IndexOf("=>"));
                 condition = condition.Replace(" ", String.Empty);
-                result = line.Substring(line.IndexOf(">") + 1);
+                result = temp.Substring(temp.IndexOf(">") + 1);
                 result = result.Replace(" ", String.Empty);
+                foreach(char letter in condition)
+                    if (char.IsUpper(letter) && result.Contains(letter.ToString()))
+                    {
+                        Console.Error.WriteLine("Rule has potential recursion loop:\n{0}", line);
+                        return (null);
+                    }
+                if (result.Contains("|") || result.Contains("^") || temp.Contains("<=>"))
+                {
+                    Console.Error.WriteLine("Rule \"{0}\" is invalid.\n", line);
+                    file.Close();
+                    return (null);
+                }
                 rule_obj.add(condition, result);
-                line = file.ReadLine();
             }
+            file.Close();
+            return (rule_obj);
         }
-        public void initial_facts()
+        public Object initial_facts()
         {
             Facts fact_obj = new Facts();
             StreamReader file = new StreamReader(file_path);
@@ -33,10 +52,15 @@ namespace expert_system
 
             while ((line = file.ReadLine()) != null)
             {
+                string temp;
                 if (line.StartsWith("="))
                 {
-                    line = line.Substring(1);
-                    foreach (char c in line)
+                    if (line.Contains("#"))
+                        temp = line.Substring(0, line.IndexOf("#"));
+                    else
+                        temp = line;
+                    temp = temp.Substring(1);
+                    foreach (char c in temp)
                     {
                         if (c != '!' && status == false)
                             fact_obj.setValue(c, 1);
@@ -51,15 +75,24 @@ namespace expert_system
                     break ;
                 }
             }
+            file.Close();
+            return (fact_obj);
         }
         public string query()
         {
             StreamReader file = new StreamReader(file_path);
+            string temp;
 
             while ((line = file.ReadLine()) != null)
             {
                 if (line.StartsWith("?"))
-                    return (line.Substring(1));
+                {
+                    if (line.Contains("#"))
+                        temp = line.Substring(0, line.IndexOf("#"));
+                    else
+                        temp = line;
+                    return (temp.Substring(1));
+                }
             }
             return (null);
         }

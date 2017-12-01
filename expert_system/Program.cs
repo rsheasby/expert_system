@@ -7,14 +7,17 @@ namespace expert_system
         static void Main(string[] args)
         {
             IO io_class = new IO();
-            Rules rule_obj = new Rules();
 
-            if (args.Length == 1)
+            foreach (string arg in args)
             {
-                io_class.file_path = args[0];
-                io_class.main_rules();
-                io_class.initial_facts();
-                Console.WriteLine("Query: " + io_class.query());
+                Console.WriteLine("Reading file \"{0}\"", arg);
+                io_class.file_path = arg;
+                Rules rule_obj = (Rules)io_class.main_rules();
+                Facts fact_obj = (Facts)io_class.initial_facts();
+                if (rule_obj == null || fact_obj == null)
+                    continue;
+                Logic.evaluateQueries(ref rule_obj, ref fact_obj, io_class.query());
+                Console.WriteLine("");
             }
         }
     }
