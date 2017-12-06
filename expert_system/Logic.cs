@@ -8,6 +8,7 @@ namespace expert_system
 		private static sbyte	evaluateRule(ref Facts facts, ref Rules rules, string condition)
 		{
 			Match	match;
+			string tempStr;
 			string	spattern = @"\(([01A-Z!\+\^\|]+)\)";
 
 			Regex regex = new Regex(spattern);
@@ -16,8 +17,8 @@ namespace expert_system
 			//	Recurse on the parts within parentheses.
 			while (match.Success)
 			{
-				string temp = match.Value.Remove(0, 1).Remove(match.Value.Length - 2, 1);
-				condition = condition.Replace(match.Value, (evaluateRule(ref facts, ref rules, temp)).ToString());
+				tempStr = match.Value.Remove(0, 1).Remove(match.Value.Length - 2, 1);
+				condition = condition.Replace(match.Value, (evaluateRule(ref facts, ref rules, tempStr)).ToString());
 				match = regex.Match(condition);
 			}
 
@@ -27,6 +28,7 @@ namespace expert_system
 				if (char.IsUpper(condition[i]))
 					condition = condition.Replace(condition[i].ToString(), (evaluateFact(ref facts, ref rules, condition[i]).ToString()));
 			}
+			condition = condition.Replace("-1", "?");
 
 			//	Invert all the values preceded by a '!'.
 			for (int i = 0; i < condition.Length; ++i)
@@ -37,11 +39,13 @@ namespace expert_system
 						condition = condition.Remove(i, 2);
 						condition = condition.Insert(i, "0");
 					}
-					else if (condition[i + 1] == '0')
+					else if (condition[i + 1] == '0' || condition[i + 1] == '?')
 					{
 						condition = condition.Remove(i, 2);
 						condition = condition.Insert(i, "1");
 					}
+					// else if (condition[i + 1] == '?')
+					// 	condition = condition.Remove(i, 1); 
 			}
 
 			//	Combine values separated by '+'.
@@ -53,6 +57,12 @@ namespace expert_system
 						--i;
 						condition = condition.Remove(i, 3);
 						condition = condition.Insert(i, "1");
+					}
+					else if (condition[i - 1] == '?' || condition[i + 1] == '?')
+					{
+						--i;
+						condition = condition.Remove(i, 3);
+						condition = condition.Insert(i, "?");
 					}
 					else
 					{
@@ -72,6 +82,12 @@ namespace expert_system
 						condition = condition.Remove(i, 3);
 						condition = condition.Insert(i, "1");
 					}
+					else if (condition[i - 1] == '?' || condition[i + 1] == '?')
+					{
+						--i;
+						condition = condition.Remove(i, 3);
+						condition = condition.Insert(i, "?");
+					}
 					else
 					{
 						--i;
@@ -84,8 +100,13 @@ namespace expert_system
 			for (int i = 0; i < condition.Length; ++i)
 			{
 				if (condition[i] == '^')
-					if ((condition[i - 1] == '1' && condition[i + 1] == '0')
-					||	(condition[i - 1] == '0' && condition[i + 1] == '1'))
+// 					if (condition[i - 1] == '?' || condition[i + 1] == '?')
+// 					{
+// 						--i;
+// 						condition = condition.Remove()
+// 					}
+					if	((condition[i - 1] == '1' && (condition[i + 1] == '0' || condition[i + 1] == '?'))
+					||	((condition[i - 1] == '0' || condition[i - 1] == '?') && condition[i + 1] == '1'))
 					{
 						--i;
 						condition = condition.Remove(i, 3);
@@ -98,7 +119,7 @@ namespace expert_system
 						condition = condition.Insert(i, "0");
 					}
 			}
-			if (condition.Length == 1)
+			if (condition.Length == 1 && condition != "?")
 				return ((sbyte)int.Parse(condition));
 			else
 				return (-1);
@@ -127,8 +148,8 @@ namespace expert_system
 					rule = rules.get(i);
 					if (rule == null)
 					{
-						if (result == -1)
-							result = 0;
+//						if (result == -1)
+//							result = 0;
 						facts.setValue(letter, result);
 						return (result);
 					}
@@ -164,8 +185,6 @@ namespace expert_system
 					switch (temp)
 					{
 						case -1:
-							Console.WriteLine("{0}: Unknown.", letter);
-							break;
 						case 0:
 							Console.WriteLine("{0}: False.", letter);
 							break;
